@@ -64,7 +64,7 @@ common/shader.cpp
 )
 
 SET(IMGUI_SOURCE
-			   imgui/examples/libs/gl3w/GL/gl3w.c
+			   #imgui/examples/libs/gl3w/GL/gl3w.c
 			   imgui/backends/imgui_impl_glfw.cpp
 			   imgui/backends/imgui_impl_opengl3.cpp
 			   imgui/imgui.cpp

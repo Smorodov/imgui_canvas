@@ -1,4 +1,11 @@
 ﻿#include "main.h"
+#include "imfilebrowser.h"
+// -----------------------------
+// https://github.com/AirGuanZ/imgui-filebrowser
+// -----------------------------
+// create a file browser instance
+// -----------------------------
+ImGui::FileBrowser fileDialog;
 // -----------------------------
 //
 // -----------------------------
@@ -19,10 +26,19 @@ void mouseCallback(int x, int y, bool button[5])
 // Render callback for 2D canvas
 // Must be assigned after graphisc initialized
 // -----------------------------
-static void renderCallback(BLContext& ctx)
+static void renderCallback(ImGui2dCanvas* thisCanvas)
 {
+    BLContext& ctx = thisCanvas->ctx;
+    BLFont& font = thisCanvas->font;
     if (ctx)
     {
+        ctx.setFillStyle(BLRgba32(0xFFFFFFFF));
+        ctx.fillUtf8Text(BLPoint(60, 80), font, "Hello Blend2D!");
+        
+        ctx.rotate(0.785398);
+        ctx.fillUtf8Text(BLPoint(250, 80), font, "Rotated Text");
+        ctx.rotate(-0.785398);
+
         ctx.setStrokeStyle(BLRgba32(0xFF00ffff));
         ctx.setStrokeWidth(2);
         ctx.strokeLine(0, 0, 100, 199);
@@ -32,7 +48,7 @@ static void renderCallback(BLContext& ctx)
 static GLuint vertexBufferID;
 static GLuint indexBufferID;
 static GLuint programID;
-static void render3dCallback(void)
+static void render3dCallback(ImGui3dCanvas* thisCanvas)
 {
     // Use our shader
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -47,7 +63,19 @@ void buttonCallback(std::string buttonName)
 {
     if (buttonName == u8"Обработать")
     {
-
+        fileDialog.Open();
+    }
+}
+// -----------------------------
+//
+// -----------------------------
+void GUICallback(MainWindow* sender)
+{
+    fileDialog.Display();
+    if (fileDialog.HasSelected())
+    {
+        std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+        fileDialog.ClearSelected();
     }
 }
 // -----------------------------
@@ -55,7 +83,10 @@ void buttonCallback(std::string buttonName)
 // -----------------------------
 void afterInitGraphicsCallback(MainWindow* sender)
 {
-    
+    // (optional) set browser properties
+    fileDialog.SetTitle("title");
+    fileDialog.SetTypeFilters({ ".h", ".cpp" });
+
     // begin rendered content init
     GLfloat vertices[] =
     {
@@ -86,10 +117,8 @@ void afterInitGraphicsCallback(MainWindow* sender)
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 
-    //render3dCallback(void)
     sender->canvas3D->renderCallback = &render3dCallback;
     sender->canvas2D->renderCallback = &renderCallback;
-
 }
 // -----------------------------
 //
@@ -108,5 +137,6 @@ int main()
     MainWindow worker;
     worker.afterInitGraphicsCallback = &afterInitGraphicsCallback;
     worker.beforeTerminateGraphicsCallback = beforeTerminateGraphicsCallback;
+    worker.GUICallback = GUICallback;
     Application application{ worker };
 }

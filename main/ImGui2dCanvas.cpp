@@ -3,7 +3,7 @@
 ImGui2dCanvas::ImGui2dCanvas(std::string name,int w,int h)
 {
     this->name = name;
-    canvas_scale = 0.5;
+    canvas_scale = 1.0;
     tmp_offset_x = 0 * canvas_scale;
     tmp_offset_y = 0 * canvas_scale;
     offset_x = 0 * canvas_scale;
@@ -103,13 +103,7 @@ void ImGui2dCanvas::Render()
     {
         BLMatrix2D m = BLMatrix2D::makeTranslation(offset_x+tmp_offset_x, offset_y + tmp_offset_y);
         ctx.setMatrix(m);
-        renderCallback(ctx);
-        
-        ctx.setFillStyle(BLRgba32(0xFFFFFFFF));
-        ctx.fillUtf8Text(BLPoint(60, 80), font, "Hello Blend2D!");
-        ctx.rotate(0.785398);
-        ctx.fillUtf8Text(BLPoint(250, 80), font, "Rotated Text");
-
+        renderCallback(this);        
         ctx.resetMatrix();
     }    
     ctx.end();  

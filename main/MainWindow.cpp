@@ -248,13 +248,13 @@ void MainWindow::InitGraphics()
     // Destructor is in TerminateGraphics method
     // size paeameters are temporal? they will
     // be recalculated and adjusted according window size in runtime.
-    canvas2D = new ImGui2dCanvas("canves 2d",1024, 1024);
+    canvas2D = new ImGui2dCanvas("canvas 2d",1024, 1024);
     prev = std::chrono::steady_clock::now();
     // Create 3d canvas
     // Destructor is in TerminateGraphics method
     // size paeameters are temporal? they will
     // be recalculated and adjusted according window size in runtime.
-    canvas3D = new ImGui3dCanvas("canves 3d",1024, 1024);
+    canvas3D = new ImGui3dCanvas("canvas 3d",1024, 1024);
 
 
     // Do things (once) after graphics is initialized
@@ -317,6 +317,8 @@ void MainWindow::worker(void)
         ProgramUI();
         // Rendering user content
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+        GUICallback(this);
 
         canvas2D->Render();
 

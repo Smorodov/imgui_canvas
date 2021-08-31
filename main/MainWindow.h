@@ -9,6 +9,7 @@
 #include "boost/signals2.hpp"
 #include "Observer.h"
 #include "Observable.h"
+#define IMGUI_IMPL_OPENGL_LOADER_GLEW 1
 #include "LogWindow.h"
 #include <string>
 #include <fstream>
@@ -41,7 +42,7 @@
 using namespace glm;
 
 #include <common/shader.hpp>
-#include <common/vboindexer.hpp>
+//#include <common/vboindexer.hpp>
 
 #include "ImGui2dCanvas.h"
 #include "ImGui3dCanvas.h"
@@ -50,7 +51,8 @@ using namespace glm;
 
 void ShowAppDockSpace(bool* p_open);
 
-void renderCallback(BLContext& ctx);
+void renderCallback(ImGui2dCanvas* thisCanvas);
+void render3dCallback(ImGui3dCanvas* thisCanvas);
 void buttonCallback(std::string buttonName);
 void keyCallback(int key, int scancode, int action, int mods);
 void mouseCallback(int x, int y, bool button[5]);
@@ -97,6 +99,7 @@ public:
     ImGui2dCanvas* canvas2D;
     ImGui3dCanvas* canvas3D;
     std::function<void(MainWindow*)> afterInitGraphicsCallback;
+    std::function<void(MainWindow*)> GUICallback;
     std::function<void(MainWindow*)> beforeTerminateGraphicsCallback;
     std::chrono::steady_clock::time_point prev;
 

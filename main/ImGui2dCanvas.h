@@ -25,7 +25,7 @@ public:
 
     ImGui2dCanvas(std::string name, int w,int h);
     ~ImGui2dCanvas();
-    std::function<void(BLContext&)> renderCallback;    
+    std::function<void(ImGui2dCanvas*)> renderCallback;
     void ImGui2dCanvas::Render();
 };
 

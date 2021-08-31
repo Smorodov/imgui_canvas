@@ -13,7 +13,7 @@ public:
     GLuint renderedTextureID;
     GLuint depthrenderbufferID;
     int width, height;
-    std::function<void(void)> renderCallback;
+    std::function<void(ImGui3dCanvas*)> renderCallback;
     ImGui3dCanvas(std::string name, int w,int h);
     ~ImGui3dCanvas();
     void Render();

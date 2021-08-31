@@ -99,7 +99,7 @@ void ImGui3dCanvas::Render()
     // RENDER
     if (renderCallback)
     {
-        renderCallback();
+        renderCallback(this);
     }
     // Render to the screen
     glBindFramebuffer(GL_FRAMEBUFFER, 0);  
